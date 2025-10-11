@@ -1,0 +1,87 @@
+body { font-family: system-ui, sans-serif; margin: 12px; width: 400px; height: 600px; overflow: auto; }
+input { width: 90%; box-sizing: border-box; padding: 8px; margin-bottom: 8px; display: block; margin-left: auto; margin-right: auto; }
+input:focus { outline: 2px solid #cecece;}
+.meta {
+	display: flex;
+	align-items: center;
+	justify-content: space-between;
+	padding: 6px 12px 0 12px;
+}
+.label {
+	font-weight: 600;
+	margin-left: 0;
+	margin-right: 8px;
+	font-size: 15px;
+}
+.id { opacity: 0.7; font-size: 12px; }
+.item {
+	width: 90%;
+	border: 1px solid #ddd;
+	border-radius: 8px;
+	margin-left: auto;
+	margin-right: auto;
+	margin-bottom: 10px;
+	background: #fff;
+	box-sizing: border-box;
+	padding-bottom: 10px;
+	position: relative;
+}
+/* Copy-Icon rechts oben */
+.copy {
+	width: 22px;
+	height: 22px;
+	cursor: pointer;
+	margin-left: auto;
+	margin-right: 0;
+	user-select: none;
+	transition: filter 0.2s;
+    border-radius: 6px;
+}
+.edit {
+  width: 22px;
+  height: 22px;
+  cursor: pointer;
+  margin-left: 8px;
+  user-select: none;
+  transition: filter 0.2s;
+  border-radius: 6px;
+}
+/* Prompt-Text in eigenem Feld mit Abstand und Text-Overflow */
+.prompt-box {
+	margin: 12px 12px 0 12px;
+	padding: 8px;
+	background: #f7f7f7;
+	border-radius: 6px;
+	font-size: 14px;
+	max-height: 3.6em;
+	overflow: hidden;
+	text-overflow: ellipsis;
+	display: -webkit-box;
+	-webkit-line-clamp: 2;
+	-webkit-box-orient: vertical;
+	white-space: normal;
+}
+pre { white-space: pre-wrap; margin: 6px 0 0; }
+button { padding: 6px 10px; cursor: pointer; }
+#count { width: 90%; box-sizing: border-box; opacity: 0.7; font-size: 12px; margin-bottom: 12px; margin-left: auto; margin-right: auto; }
+h1 { text-align: center; font-size: 18px; margin-bottom: 12px; }
+
+/* Edit Page Style */
+.edit-container { width: 90%; margin: 24px auto; display: flex; flex-direction: column; gap: 16px; }
+.edit-label { font-weight: 600; margin-bottom: 4px; }
+.edit-input { width: 100%; box-sizing: border-box; padding: 8px; font-size: 15px; font-family: system-ui, sans-serif;}
+.edit-textarea { width: 100%; min-height: 120px; box-sizing: border-box; padding: 8px; font-size: 14px; resize: vertical; font-family: system-ui, sans-serif;}
+.edit-save { align-self: flex-end; padding: 8px 18px; font-size: 15px; border-radius: 6px; border: none; background: #2b7cff; color: #fff; cursor: pointer; }
+.edit-back {align-self: flex-end; padding: 8px 18px; font-size: 15px; border-radius: 6px; border: none; background: #2b7cff; color: #fff; cursor: pointer; }
+.edit-container {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.edit-actions {
+  display: flex;
+  flex-direction: row;
+  gap: 12px;
+  justify-content: flex-end;
+}

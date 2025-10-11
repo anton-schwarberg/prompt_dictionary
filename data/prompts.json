@@ -1,0 +1,26 @@
+[
+  {
+    "id": "translator",
+    "label": "Translator Prompt",
+    "text": "You are a professional translator from {source} to {target}. Translate: {input}",
+    "tags": ["translation", "language"]
+  },
+  {
+    "id": "summarizer",
+    "label": "Summarizer",
+    "text": "Summarize the following text in 5 bullet points:\n{input}",
+    "tags": ["summary"]
+  },
+  {
+    "id": "tester",
+    "label": "Tester",
+    "text": "Test the following input:\n{input}",
+    "tags": ["testing"]
+  },
+  {
+    "id": "long_prompt",
+    "label": "Long Prompt",
+    "text": "This prompt is intentionally made very long to test the handling of long texts in the application. It includes multiple sentences, various punctuation marks, and a variety of vocabulary to ensure that it exceeds typical length limits. The purpose is to see how well the system can manage and display lengthy prompts without any issues or truncation. Here is some additional filler text to make sure we reach a substantial length: Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.",
+    "tags": ["summary"]
+  }
+]

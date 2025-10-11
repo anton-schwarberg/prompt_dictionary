@@ -1,0 +1,12 @@
+{
+  "manifest_version": 3,
+  "name": "Prompt Dictionary",
+  "version": "1.1.0",
+  "description": "This Extension gives you the possibility to save and manage your prompts for AI tools.",
+  "action": {
+    "default_title": "Prompt Dictionary",
+    "default_popup": "popup/index.html"
+  },
+  "background": { "service_worker": "background.js" },
+  "permissions": ["storage", "scripting", "activeTab", "clipboardWrite"]
+}

@@ -159,4 +159,26 @@
     listEl.textContent = 'Fehler: ' + (err && err.message ? err.message : String(err));
     countEl.textContent = '';
   }
+
+  const exportBtn = document.querySelector('.export-icon');
+
+  if (exportBtn) {
+    exportBtn.addEventListener('click', () => {
+      exportBtn.style.filter = 'brightness(0.7)';
+      setTimeout(() => exportBtn.style.filter = '', 600);
+      // Prompts als JSON exportieren und herunterladen
+      const dataStr = JSON.stringify(prompts, null, 2);
+      const blob = new Blob([dataStr], { type: 'application/json' });
+      const url = URL.createObjectURL(blob);
+      const a = document.createElement('a');
+      a.href = url;
+      a.download = 'prompts.json';
+      document.body.appendChild(a);
+      a.click();
+      setTimeout(() => {
+        document.body.removeChild(a);
+        URL.revokeObjectURL(url);
+      }, 100);
+    });
+}
 })();

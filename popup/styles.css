@@ -1,6 +1,53 @@
-body { font-family: system-ui, sans-serif; margin: 12px; width: 400px; height: 600px; overflow: auto; }
-input { width: 90%; box-sizing: border-box; padding: 8px; margin-bottom: 8px; display: block; margin-left: auto; margin-right: auto; }
-input:focus { outline: 2px solid #cecece;}
+/* Subpage here */
+
+.subpage.header {
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	position: relative;
+	margin-bottom: 18px;
+}
+.subpage.header h1 {
+	flex: 1;
+	text-align: center;
+	font-size: 22px;
+	margin: 0;
+}
+.back-icon {
+	position: absolute;
+	left: 0;
+	width: 28px;
+	height: 28px;
+	cursor: pointer;
+	top: 50%;
+	transform: translateY(-50%);
+	border-radius: 6px;
+	background: none;
+}
+
+/* Body Style */
+
+body { 
+	font-family: system-ui, sans-serif; 
+	margin: 12px; 
+	width: 400px; 
+	height: 600px; 
+	overflow: auto; 
+}
+input { 
+	width: 90%; 
+	box-sizing: border-box; 
+	padding: 8px; 
+	margin-bottom: 8px; 
+	display: block; 
+	margin-left: auto; 
+	margin-right: auto; 
+}
+
+input:focus { 
+	outline: 2px solid #cecece;
+}
+
 .meta {
 	display: flex;
 	align-items: center;
@@ -26,7 +73,7 @@ input:focus { outline: 2px solid #cecece;}
 	padding-bottom: 10px;
 	position: relative;
 }
-/* Copy-Icon rechts oben */
+/* Copy Icon upper right */
 .copy {
 	width: 22px;
 	height: 22px;
@@ -46,7 +93,7 @@ input:focus { outline: 2px solid #cecece;}
   transition: filter 0.2s;
   border-radius: 6px;
 }
-/* Prompt-Text in eigenem Feld mit Abstand und Text-Overflow */
+
 .prompt-box {
 	margin: 12px 12px 0 12px;
 	padding: 8px;
@@ -64,24 +111,18 @@ input:focus { outline: 2px solid #cecece;}
 pre { white-space: pre-wrap; margin: 6px 0 0; }
 button { padding: 6px 10px; cursor: pointer; }
 #count { width: 90%; box-sizing: border-box; opacity: 0.7; font-size: 12px; margin-bottom: 12px; margin-left: auto; margin-right: auto; }
-h1 { text-align: center; font-size: 18px; margin-bottom: 12px; }
+h1 { text-align: center; font-size: 24px; margin-bottom: 20px; }
 
-/* Edit Page Style */
-.edit-container { width: 90%; margin: 24px auto; display: flex; flex-direction: column; gap: 16px; }
-.edit-label { font-weight: 600; margin-bottom: 4px; }
+/* Edit/Add Page Style */
+.edit-label { font-size: 18px; margin-bottom: 4px; }
 .edit-input { width: 100%; box-sizing: border-box; padding: 8px; font-size: 15px; font-family: system-ui, sans-serif;}
-.edit-textarea { width: 100%; min-height: 120px; box-sizing: border-box; padding: 8px; font-size: 14px; resize: vertical; font-family: system-ui, sans-serif;}
-.edit-save { align-self: flex-end; padding: 8px 18px; font-size: 15px; border-radius: 6px; border: none; background: #2b7cff; color: #fff; cursor: pointer; }
+.edit-textarea { width: 100%; min-height: 180px; box-sizing: border-box; padding: 8px; font-size: 14px; resize: vertical; font-family: system-ui, sans-serif;}
 .edit-back {align-self: flex-end; padding: 8px 18px; font-size: 15px; border-radius: 6px; border: none; background: #2b7cff; color: #fff; cursor: pointer; }
-.edit-container {
-  display: flex;
-  flex-direction: column;
-  gap: 16px;
-}
+.edit-container { display: flex; flex-direction: column; gap: 16px; }
+.edit-delete { align-self: flex-end; padding: 8px 18px; font-size: 15px; border-radius: 6px; border: none; background: #ff4d4d; color: #fff; cursor: pointer; }
+.edit-actions { display: flex; flex-direction: row; gap: 12px; justify-content: flex-end; }
 
-.edit-actions {
-  display: flex;
-  flex-direction: row;
-  gap: 12px;
-  justify-content: flex-end;
-}
+.add-container { width: 90%; box-sizing: border-box; display: flex; justify-content: flex-end; margin-left: auto; margin-right: auto; margin-bottom: 12px; }
+.add-container button { padding: 8px 18px; font-size: 15px; border-radius: 6px; border: none; background: #dddddd; color: #363636; cursor: pointer; }
+
+.addpage-container { width: 90%; margin: 24px auto; display: flex; flex-direction: column; gap: 16px; }

@@ -14,19 +14,9 @@
   const textInput = document.getElementById('edit-text');
   const saveBtn = document.getElementById('save-btn');
   const backBtn = document.getElementById('back-btn');
+  const deleteBtn = document.getElementById('delete-btn');
 
-  // Prompts laden
-  const url = chrome.runtime.getURL('../data/prompts.json');
-  let prompts = [];
-  try {
-    const res = await fetch(url);
-    prompts = await res.json();
-  } catch {
-    alert('Prompts konnten nicht geladen werden.');
-    window.close();
-    return;
-  }
-
+  const { prompts } = await chrome.storage.local.get("prompts");
   // Prompt suchen
   const idx = prompts.findIndex(p => p.id === promptId);
   if (idx === -1) {
@@ -51,5 +41,13 @@
   backBtn.addEventListener('click', () => {
     window.location.href = 'index.html';
   });
+
+  deleteBtn.addEventListener('click', async () => {
+    if (confirm('Do you really want to delete this prompt?')) {
+      prompts.splice(idx, 1);
+      await chrome.storage.local.set({ prompts });
+      window.location.href = 'index.html';
+    }
+    });
 
 })();

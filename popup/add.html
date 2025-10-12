@@ -2,25 +2,26 @@
 <html>
   <head>
     <meta charset="utf-8" />
-    <title>Prompt bearbeiten</title>
+    <title>Add Prompt</title>
     <link rel="stylesheet" href="styles.css">
   </head>
   <body>
     <div class="subpage header">
       <img src="../icons/back.png" id="back-btn" class="back-icon" alt="Zurück" tabindex="0">
-      <h1>Prompt bearbeiten</h1>
+      <h1>Add Prompt</h1>
     </div>
-    <div class="edit-container">
-      <label class="edit-label" for="edit-name">Prompt Name</label>
-      <input class="edit-input" id="edit-name" type="text" maxlength="80" />
-      <label class="edit-label" for="edit-text">Prompt</label>
-      <textarea class="edit-textarea" id="edit-text"></textarea>
+    <div class="addpage-container">
+      <label class="edit-label" for="add-name">Prompt Name</label>
+      <input class="edit-input" id="add-name" type="text" maxlength="80" placeholder="e.g. Translator Prompt"/>
+      <label class="edit-label" for="add-text">Prompt</label>
+      <textarea class="edit-textarea" id="add-text" placeholder="Enter your prompt here..."></textarea>
+      <label class="edit-label" for="add-labels">Labels</label>
+      <input class="edit-input" id="add-labels" type="text" maxlength="120" placeholder="e.g. tag1, tag2 (comma-separated)" />
       <div class="edit-actions">
         <button class="edit-back" id="save-btn">Save</button>
-        <button class="edit-delete" id="delete-btn" type="button">Delete</button>
       </div>
     </div>
-    <script src="edit.js"></script>
+    <script src="add.js"></script>
     <script>
       document.addEventListener('DOMContentLoaded', function() {
         const backIcon = document.getElementById('back-icon');

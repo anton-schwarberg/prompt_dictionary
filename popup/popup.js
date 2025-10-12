@@ -7,18 +7,11 @@
   let prompts = [];
   // Problem hier
 
-  /** JSON laden */
+  /** Prompts laden nur aus Storage */
   async function loadPrompts() {
-  const { prompts: storedPrompts } = await chrome.storage.local.get("prompts");
-  if (Array.isArray(storedPrompts) && storedPrompts.length > 0) {
+    const { prompts: storedPrompts = [] } = await chrome.storage.local.get("prompts");
     prompts = storedPrompts;
-  } else {
-    const url = chrome.runtime.getURL('data/prompts.json');
-    const res = await fetch(url);
-    if (!res.ok) throw new Error('prompts.json konnte nicht geladen werden');
-    prompts = await res.json();
-  }
-  render(prompts);
+    render(prompts);
   }
 
   /** HTML-Escaping für Labels/IDs */
@@ -130,6 +123,14 @@
 
   /** Events */
   searchEl.addEventListener('input', e => render(filter(e.target.value)));
+
+  // Add Prompt Button
+  const addBtn = document.getElementById('add-btn');
+  if (addBtn) {
+    addBtn.addEventListener('click', () => {
+      window.location.href = 'add.html';
+    });
+  }
 
   document.addEventListener('click', async e => {
     // Kopieren

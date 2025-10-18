@@ -27,7 +27,7 @@
     } while (prompts.some(p => p.id === newId));
     // Create Prompt object
     const newPrompt = { id: newId, label, text, tags: labels };
-    prompts.push(newPrompt);
+    prompts.unshift(newPrompt);
     await chrome.storage.local.set({ prompts });
     window.location.href = 'index.html';
   });

@@ -65,6 +65,19 @@
 
 	background: none;
 }
+
+.import-icon {
+	position: absolute;
+	left: 0px;
+	width: 22px;
+	height: 22px;
+	cursor: pointer;
+	top: 50%;
+	transform: translateY(-50%);
+	transition: filter 0.2s;
+	border-radius: 6px;
+	background: none;
+}
 /* Body Style */
 body { 
 	font-family: system-ui, sans-serif; 

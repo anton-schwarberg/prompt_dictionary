@@ -63,24 +63,24 @@
       meta.appendChild(label); // Label in den Meta-Bereich einfügen
 
 
-  // Copy-Icon als klickbares Bild
-  const copyIcon = document.createElement('img');
-  copyIcon.className = 'copy';
-  copyIcon.src = '../icons/copy.png';
-  copyIcon.alt = 'Kopieren';
-  copyIcon.title = 'Prompt kopieren';
-  copyIcon.dataset.id = p.id;
-  meta.appendChild(copyIcon);
+      // Copy-Icon als klickbares Bild
+      const copyIcon = document.createElement('img');
+      copyIcon.className = 'copy';
+      copyIcon.src = '../icons/copy.png';
+      copyIcon.alt = 'copy';
+      copyIcon.title = 'copy prompt';
+      copyIcon.dataset.id = p.id;
+      meta.appendChild(copyIcon);
 
-  // Edit-Icon als klickbares Bild
-  const editIcon = document.createElement('img');
-  editIcon.className = 'edit';
-  editIcon.src = '../icons/edit.png';
-  editIcon.alt = 'Bearbeiten';
-  editIcon.title = 'Prompt bearbeiten';
-  editIcon.dataset.id = p.id;
-  editIcon.style.marginLeft = '8px';
-  meta.appendChild(editIcon);
+      // Edit-Icon als klickbares Bild
+      const editIcon = document.createElement('img');
+      editIcon.className = 'edit';
+      editIcon.src = '../icons/edit.png';
+      editIcon.alt = 'edit';
+      editIcon.title = 'edit prompt';
+      editIcon.dataset.id = p.id;
+      editIcon.style.marginLeft = '8px';
+      meta.appendChild(editIcon);
 
       wrap.appendChild(meta); // Meta-Bereich in den Listeneintrag aufnehmen
 
@@ -159,26 +159,109 @@
     listEl.textContent = 'Fehler: ' + (err && err.message ? err.message : String(err));
     countEl.textContent = '';
   }
-
-  const exportBtn = document.querySelector('.export-icon');
+  // Export Button
+  const exportBtn = document.getElementById('export-btn');
 
   if (exportBtn) {
     exportBtn.addEventListener('click', () => {
-      exportBtn.style.filter = 'brightness(0.7)';
-      setTimeout(() => exportBtn.style.filter = '', 600);
-      // Prompts als JSON exportieren und herunterladen
-      const dataStr = JSON.stringify(prompts, null, 2);
-      const blob = new Blob([dataStr], { type: 'application/json' });
-      const url = URL.createObjectURL(blob);
-      const a = document.createElement('a');
-      a.href = url;
-      a.download = 'prompts.json';
-      document.body.appendChild(a);
-      a.click();
-      setTimeout(() => {
-        document.body.removeChild(a);
-        URL.revokeObjectURL(url);
-      }, 100);
+      if (confirm('Do you want to export all prompts as JSON?')) {
+        exportBtn.style.filter = 'brightness(0.7)';
+        setTimeout(() => exportBtn.style.filter = '', 600);
+        // Prompts als JSON exportieren und herunterladen
+        const dataStr = JSON.stringify(prompts, null, 2);
+        const blob = new Blob([dataStr], { type: 'application/json' });
+        const url = URL.createObjectURL(blob);
+        const a = document.createElement('a');
+        a.href = url;
+        a.download = 'prompts.json';
+        document.body.appendChild(a);
+        a.click();
+        setTimeout(() => {
+          document.body.removeChild(a);
+          URL.revokeObjectURL(url);
+        }, 100);
+      }
     });
-}
+  }
+
+    const importBtn = document.getElementById('import-btn');
+    if (importBtn) {
+      importBtn.addEventListener('click', () => {
+        const fileInput = document.createElement('input');
+        fileInput.type = 'file';
+        fileInput.accept = '.json,application/json';
+        fileInput.style.display = 'none';
+        document.body.appendChild(fileInput);
+
+        fileInput.addEventListener('change', async () => {
+          const file = fileInput.files[0];
+          if (!file) return;
+          const text = await file.text();
+          let imported;
+          try {
+            imported = JSON.parse(text);
+            if (!Array.isArray(imported)) throw new Error('Json must be array');  
+          } catch (e) {
+            alert('invalid JSON format: ' + e.message);
+            document.body.removeChild(fileInput);
+            return;
+          }
+
+          // Load prompts from storage and test if they exist
+          const {prompts = []} = await chrome.storage.local.get('prompts');
+          let changed = false;
+          for (const imp of imported) {
+            if (!imp.id || !imp.label || !imp.text) continue;
+
+            const idx = prompts.findIndex(p => p.id === imp.id);
+            if (idx == -1) {
+              prompts.push(imp);
+              changed = true;
+            } else {
+              const existing = prompts[idx];
+              if (
+                existing.label === imp.label &&
+                existing.text === imp.text
+              ) {
+                continue; // prompt identical, skipping
+              } else if (
+                  existing.label === imp.label &&
+                  existing.text !== imp.text
+                ) {
+                  let newId = 'p' + Date.now() + Math.floor(Math.random()*10000);
+                  let newLabel = imp.label + ' (imported)';
+                  prompts.push({
+                    id: newId,
+                    label: newLabel,
+                    text: imp.text,
+                    tags: imp.tags || []
+                  });
+                  changed = true;
+                } else {
+                  let newId;
+                  do {
+                    newId = 'p' + Date.now() + Math.floor(Math.random()*10000);
+                  } while (prompts.some(p => p.id === newId));
+                  prompts.push({
+                    id: newId,
+                    label: imp.label,
+                    text: imp.text,
+                    tags: imp.tags || []
+                  });
+                  changed = true;
+              }
+            }
+          }
+          if (changed) {
+            await chrome.storage.local.set({prompts});
+            alert('Import successful!');
+            location.reload();
+          } else {
+            alert('No new prompts to import.');
+          }
+          document.body.removeChild(fileInput);
+        });
+        fileInput.click();
+      });
+    }
 })();

@@ -241,14 +241,14 @@
       const actions = document.createElement('div');
       actions.className = 'meta-actions';
 
-      // Copy-Icon als klickbares Bild
-      const copyIcon = document.createElement('img');
-      copyIcon.className = 'copy';
-      copyIcon.src = '../icons/copy.png';
-      copyIcon.alt = 'copy';
-      copyIcon.title = 'copy prompt';
-      copyIcon.dataset.id = p.id;
-      actions.appendChild(copyIcon);
+      // Export single prompt icon
+      const exportsingle = document.createElement('img');
+      exportsingle.className = 'export-single';
+      exportsingle.src = '../icons/export.png';
+      exportsingle.alt = 'export';
+      exportsingle.title = 'export this prompt';
+      exportsingle.dataset.id = p.id;
+      actions.appendChild(exportsingle);
 
       // Edit-Icon als klickbares Bild
       const editIcon = document.createElement('img');
@@ -258,6 +258,15 @@
       editIcon.title = 'edit prompt';
       editIcon.dataset.id = p.id;
       actions.appendChild(editIcon);
+
+      // Copy-Icon als klickbares Bild
+      const copyIcon = document.createElement('img');
+      copyIcon.className = 'copy';
+      copyIcon.src = '../icons/copy.png';
+      copyIcon.alt = 'copy';
+      copyIcon.title = 'copy prompt';
+      copyIcon.dataset.id = p.id;
+      actions.appendChild(copyIcon);
 
       meta.appendChild(actions);
       wrap.appendChild(meta); // Meta-Bereich in den Listeneintrag aufnehmen
@@ -312,7 +321,7 @@
   }
 
   document.addEventListener('click', async e => {
-    // Kopieren
+    // Copy
     const btn = e.target.closest('.copy');
     if (btn) {
       const id = btn.dataset.id;
@@ -328,6 +337,28 @@
     if (editBtn) {
       const id = editBtn.dataset.id;
       window.location.href = `edit.html?id=${encodeURIComponent(id)}`;
+      return;
+    }
+
+    const exportBtn = e.target.closest('.export-single');
+    if (exportBtn) {
+      const id = exportBtn.dataset.id;
+      const p = prompts.find(x => x.id === id);
+      if (!p) return;
+      exportBtn.style.filter = 'brightness(0.7)';
+      setTimeout(() => (exportBtn.style.filter = ''), 200);
+      const dataStr = JSON.stringify(p, null, 2);
+      const blob = new Blob([dataStr], {type: 'application/json'});
+      const url = URL.createObjectURL(blob);
+      const a = document.createElement('a');
+      a.href = url;
+      a.download = (p.label || 'prompt')+'.json';
+      document.body.appendChild(a);
+      a.click();
+      setTimeout(() => {
+        document.body.removeChild(a);
+        URL.revokeObjectURL(url);
+      }, 100);
       return;
     }
   });

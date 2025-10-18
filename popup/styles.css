@@ -216,6 +216,15 @@ input:focus {
 	border-radius: 6px;
 }
 
+.export-single {
+	width: 22px;
+	height: 22px;
+	cursor: pointer;
+	user-select: none;
+	transition: filter 0.2s;
+	border-radius: 6px;
+}
+
 .prompt-box {
 	margin: 12px 12px 0 12px;
 	padding: 8px;

@@ -193,8 +193,8 @@ input:focus {
 }
 
 .item.drop-target {
-	outline: 2px dashed #cad7ff;
-	outline-offset: -6px;
+	outline: 2px dashed #ababab;
+	outline-offset: 0px;
 }
 
 /* Copy Icon upper right */

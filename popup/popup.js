@@ -158,15 +158,15 @@
     e.preventDefault();
     const afterElement = getDragAfterElement(listEl, e.clientY);
     if (afterElement == null) {
-      setDropTarget(null);
       if (listEl.lastElementChild !== dragging) {
         listEl.appendChild(dragging);
       }
+      setDropTarget(dragging);
     } else {
-      setDropTarget(afterElement);
       if (afterElement !== dragging) {
         listEl.insertBefore(dragging, afterElement);
       }
+      setDropTarget(dragging);
     }
   });
 

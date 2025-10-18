@@ -6,6 +6,10 @@
   /** In-Memory-Liste der Prompts */
   let prompts = [];
   // Problem hier
+  let lastRenderedCount = 0;
+  let reorderMessageTimer = null;
+  let currentDropTarget = null;
+  const REORDER_HINT_TIMEOUT = 2000;
 
   /** Prompts laden nur aus Storage */
   async function loadPrompts() {
@@ -13,6 +17,165 @@
     prompts = storedPrompts;
     render(prompts);
   }
+
+  function isSearchActive() {
+    return !!searchEl.value && searchEl.value.trim().length > 0;
+  }
+
+  function showTemporaryMessage(message) {
+    if (reorderMessageTimer) clearTimeout(reorderMessageTimer);
+    countEl.textContent = message;
+    reorderMessageTimer = setTimeout(() => {
+      countEl.textContent = `${lastRenderedCount} Hits`;
+      reorderMessageTimer = null;
+    }, REORDER_HINT_TIMEOUT);
+  }
+
+  function setDropTarget(el) {
+    if (currentDropTarget === el) return;
+    if (currentDropTarget) currentDropTarget.classList.remove('drop-target');
+    currentDropTarget = el;
+    if (currentDropTarget) currentDropTarget.classList.add('drop-target');
+  }
+
+  function getDragAfterElement(container, y) {
+    const elements = [...container.querySelectorAll('.item:not(.dragging)')];
+    let closest = { offset: Number.NEGATIVE_INFINITY, element: null };
+    for (const child of elements) {
+      const box = child.getBoundingClientRect();
+      const offset = y - box.top - box.height / 2;
+      if (offset < 0 && offset > closest.offset) {
+        closest = { offset, element: child };
+      }
+    }
+    return closest.element;
+  }
+
+  function attachDragHandlers(itemEl, handleEl) {
+    const resetDraggable = () => {
+      itemEl.draggable = false;
+      delete itemEl.dataset.dragArmed;
+    };
+
+    const armDrag = e => {
+      if (isSearchActive()) {
+        if (e) e.preventDefault();
+        showTemporaryMessage('Clear search to reorder');
+        return false;
+      }
+      itemEl.draggable = true;
+      itemEl.dataset.dragArmed = '1';
+      return true;
+    };
+
+    const handlePress = e => {
+      if (e.type === 'touchstart') {
+        armDrag(e);
+      } else {
+        armDrag(e);
+      }
+    };
+
+    const handleRelease = e => {
+      const stillPressed = e && typeof e.buttons === 'number' && e.buttons !== 0;
+      if (stillPressed) return;
+      if (!itemEl.classList.contains('dragging')) {
+        resetDraggable();
+      }
+    };
+
+    handleEl.addEventListener('mousedown', handlePress);
+    handleEl.addEventListener('touchstart', handlePress, { passive: false });
+    handleEl.addEventListener('mouseup', handleRelease);
+    handleEl.addEventListener('mouseleave', handleRelease);
+    handleEl.addEventListener('touchend', handleRelease);
+    handleEl.addEventListener('touchcancel', handleRelease);
+
+    itemEl.addEventListener('dragstart', e => {
+      if (itemEl.dataset.dragArmed !== '1') {
+        e.preventDefault();
+        resetDraggable();
+        return;
+      }
+      e.dataTransfer.effectAllowed = 'move';
+      e.dataTransfer.setData('text/plain', itemEl.dataset.id || '');
+      requestAnimationFrame(() => itemEl.classList.add('dragging'));
+      setDropTarget(null);
+    });
+
+    itemEl.addEventListener('drag', () => {
+      // keep card elevated while dragging even if browser fires multiple drag events
+      if (!itemEl.classList.contains('dragging') && itemEl.dataset.dragArmed === '1') {
+        itemEl.classList.add('dragging');
+      }
+    });
+
+    itemEl.addEventListener('dragend', async () => {
+      itemEl.classList.remove('dragging');
+      resetDraggable();
+      setDropTarget(null);
+      try {
+        await finalizeReorder();
+      } catch (err) {
+        console.error('Reorder failed', err);
+        render(isSearchActive() ? filter(searchEl.value) : prompts);
+        showTemporaryMessage('Unable to save order');
+      }
+    });
+  }
+
+  async function finalizeReorder() {
+    const orderedItems = Array.from(listEl.children);
+    if (!orderedItems.length) return;
+    const orderedIds = orderedItems.map(el => el.dataset.id).filter(Boolean);
+    if (!orderedIds.length) return;
+    if (orderedIds.length !== prompts.length) {
+      // Liste war gefiltert, ursprüngliche Reihenfolge beibehalten
+      render(isSearchActive() ? filter(searchEl.value) : prompts);
+      return;
+    }
+
+    const unchanged = orderedIds.every((id, idx) => id === (prompts[idx] && prompts[idx].id));
+    if (unchanged) return;
+
+    const idMap = new Map(prompts.map(p => [p.id, p]));
+    const newPrompts = orderedIds.map(id => idMap.get(id)).filter(Boolean);
+    if (newPrompts.length !== prompts.length) {
+      // sicherheitshalber nichts überschreiben, falls IDs fehlen
+      render(isSearchActive() ? filter(searchEl.value) : prompts);
+      showTemporaryMessage('Unable to save order');
+      return;
+    }
+
+    prompts = newPrompts;
+    await chrome.storage.local.set({ prompts });
+    render(isSearchActive() ? filter(searchEl.value) : prompts);
+  }
+
+  listEl.addEventListener('dragover', e => {
+    const dragging = listEl.querySelector('.item.dragging');
+    if (!dragging) return;
+    e.preventDefault();
+    const afterElement = getDragAfterElement(listEl, e.clientY);
+    if (afterElement == null) {
+      setDropTarget(null);
+      if (listEl.lastElementChild !== dragging) {
+        listEl.appendChild(dragging);
+      }
+    } else {
+      setDropTarget(afterElement);
+      if (afterElement !== dragging) {
+        listEl.insertBefore(dragging, afterElement);
+      }
+    }
+  });
+
+  listEl.addEventListener('drop', e => e.preventDefault());
+  listEl.addEventListener('dragleave', e => {
+    if (!listEl.contains(e.relatedTarget)) {
+      setDropTarget(null);
+    }
+  });
 
   /** HTML-Escaping für Labels/IDs */
   function escapeHtml(s) {
@@ -48,20 +211,35 @@
   /** Liste rendern */
   function render(items) {
     listEl.innerHTML = ''; // vorhandene Anzeige zurücksetzen, bevor neue Elemente eingefügt werden
+    lastRenderedCount = items.length;
     countEl.textContent = `${items.length} Hits`; // Trefferanzahl im Zählerbereich aktualisieren
     for (const p of items) { // jeden Prompt-Datensatz nacheinander verarbeiten
       const wrap = document.createElement('div'); // Container für einen kompletten Listeneintrag erzeugen
       wrap.className = 'item'; // Container mit Styling für Listenelemente versehen
+      wrap.dataset.id = p.id;
+      wrap.draggable = false;
 
       // Meta-Bereich mit Label und Copy-Icon
       const meta = document.createElement('div'); // obere Zeile für Meta-Informationen erstellen
       meta.className = 'meta'; // Layout-Klasse für Meta-Bereich zuweisen
 
+      const metaLeft = document.createElement('div');
+      metaLeft.className = 'meta-left';
+
+      const handleBtn = document.createElement('button');
+      handleBtn.type = 'button';
+      handleBtn.className = 'drag-handle';
+      handleBtn.setAttribute('aria-label', 'Drag to reorder');
+      metaLeft.appendChild(handleBtn);
+
       const label = document.createElement('div'); // Label-Element vorbereiten
       label.className = 'label'; // Label-Styling aktivieren
       label.textContent = p.label || p.id; // sichtbaren Text setzen, Fallback auf ID
-      meta.appendChild(label); // Label in den Meta-Bereich einfügen
+      metaLeft.appendChild(label); // Label in den Meta-Bereich einfügen
+      meta.appendChild(metaLeft);
 
+      const actions = document.createElement('div');
+      actions.className = 'meta-actions';
 
       // Copy-Icon als klickbares Bild
       const copyIcon = document.createElement('img');
@@ -70,7 +248,7 @@
       copyIcon.alt = 'copy';
       copyIcon.title = 'copy prompt';
       copyIcon.dataset.id = p.id;
-      meta.appendChild(copyIcon);
+      actions.appendChild(copyIcon);
 
       // Edit-Icon als klickbares Bild
       const editIcon = document.createElement('img');
@@ -79,9 +257,9 @@
       editIcon.alt = 'edit';
       editIcon.title = 'edit prompt';
       editIcon.dataset.id = p.id;
-      editIcon.style.marginLeft = '8px';
-      meta.appendChild(editIcon);
+      actions.appendChild(editIcon);
 
+      meta.appendChild(actions);
       wrap.appendChild(meta); // Meta-Bereich in den Listeneintrag aufnehmen
 
       // Prompt-Text in eigenem Feld mit Abstand und Text-Overflow
@@ -91,6 +269,7 @@
       wrap.appendChild(promptBox); // Textbereich unter dem Meta-Block hinzufügen
       listEl.appendChild(wrap); // fertigen Eintrag in die Liste einsetzen
       clampPromptPreview(promptBox, fullText); // Vorschau auf maximale Höhe kürzen und Ellipse setzen
+      attachDragHandlers(wrap, handleBtn);
     }
   }
 

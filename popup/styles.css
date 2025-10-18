@@ -7,12 +7,14 @@
 	position: relative;
 	margin-bottom: 18px;
 }
+
 .subpage.header h1 {
 	flex: 1;
 	text-align: center;
 	font-size: 22px;
 	margin-bottom: 20px;
 }
+
 .back-icon {
 	position: absolute;
 	left: 0;
@@ -24,6 +26,7 @@
 	border-radius: 6px;
 	background: none;
 }
+
 /* Mainpage Style */
 /* Header */
 
@@ -38,7 +41,11 @@
 	margin-right: auto;
 }
 
-.mainpage.header h1 { text-align: center; font-size: 24px; margin-bottom: 20px; }
+.mainpage.header h1 {
+	text-align: center;
+	font-size: 24px;
+	margin-bottom: 20px;
+}
 
 .addprompt-icon {
 	position: absolute;
@@ -78,25 +85,27 @@
 	border-radius: 6px;
 	background: none;
 }
+
 /* Body Style */
-body { 
-	font-family: system-ui, sans-serif; 
-	margin: 12px; 
-	width: 400px; 
-	height: 600px; 
-	overflow: auto; 
-}
-input { 
-	width: 90%; 
-	box-sizing: border-box; 
-	padding: 8px; 
-	margin-bottom: 8px; 
-	display: block; 
-	margin-left: auto; 
-	margin-right: auto; 
+body {
+	font-family: system-ui, sans-serif;
+	margin: 12px;
+	width: 400px;
+	height: 600px;
+	overflow: auto;
 }
 
-input:focus { 
+input {
+	width: 90%;
+	box-sizing: border-box;
+	padding: 8px;
+	margin-bottom: 8px;
+	display: block;
+	margin-left: auto;
+	margin-right: auto;
+}
+
+input:focus {
 	outline: 2px solid #cecece;
 }
 
@@ -105,14 +114,64 @@ input:focus {
 	align-items: center;
 	justify-content: space-between;
 	padding: 6px 12px 0 12px;
+	gap: 12px;
 }
+
+.meta-left {
+	display: flex;
+	align-items: center;
+	gap: 8px;
+	min-width: 0;
+}
+
+.meta-actions {
+	display: flex;
+	align-items: center;
+	gap: 8px;
+	margin-left: auto;
+}
+
+.drag-handle {
+	width: 22px;
+	height: 22px;
+	cursor: grab;
+	border: none;
+	padding: 0;
+	background: url('../icons/dots.png') center/16px 16px no-repeat;
+	transition: filter 0.15s;
+}
+
+.drag-handle:hover {
+	filter: brightness(0.85);
+}
+
+.drag-handle:focus-visible {
+	outline: 2px solid #b7c4ff;
+	border-radius: 6px;
+}
+
+.drag-handle:active {
+	cursor: grabbing;
+	filter: brightness(0.75);
+}
+
 .label {
 	font-weight: 600;
 	margin-left: 0;
 	margin-right: 8px;
 	font-size: 15px;
+	flex: 1;
+	min-width: 0;
+	overflow: hidden;
+	text-overflow: ellipsis;
+	white-space: nowrap;
 }
-.id { opacity: 0.7; font-size: 12px; }
+
+.id {
+	opacity: 0.7;
+	font-size: 12px;
+}
+
 .item {
 	width: 90%;
 	border: 1px solid #ddd;
@@ -125,25 +184,36 @@ input:focus {
 	padding-bottom: 10px;
 	position: relative;
 }
+
+.item.dragging {
+	opacity: 0.85;
+	box-shadow: 0 8px 18px rgba(0, 0, 0, 0.12);
+	transform: scale(1.01);
+	transition: box-shadow 0.2s, transform 0.2s;
+}
+
+.item.drop-target {
+	outline: 2px dashed #cad7ff;
+	outline-offset: -6px;
+}
+
 /* Copy Icon upper right */
 .copy {
 	width: 22px;
 	height: 22px;
 	cursor: pointer;
-	margin-left: auto;
-	margin-right: 0;
 	user-select: none;
 	transition: filter 0.2s;
-    border-radius: 6px;
+	border-radius: 6px;
 }
+
 .edit {
-  width: 22px;
-  height: 22px;
-  cursor: pointer;
-  margin-left: 8px;
-  user-select: none;
-  transition: filter 0.2s;
-  border-radius: 6px;
+	width: 22px;
+	height: 22px;
+	cursor: pointer;
+	user-select: none;
+	transition: filter 0.2s;
+	border-radius: 6px;
 }
 
 .prompt-box {
@@ -160,20 +230,110 @@ input:focus {
 	-webkit-box-orient: vertical;
 	white-space: normal;
 }
-pre { white-space: pre-wrap; margin: 6px 0 0; }
-button { padding: 6px 10px; cursor: pointer; }
-#count { width: 90%; box-sizing: border-box; opacity: 0.7; font-size: 12px; margin-bottom: 12px; margin-left: auto; margin-right: auto; }
+
+pre {
+	white-space: pre-wrap;
+	margin: 6px 0 0;
+}
+
+button {
+	padding: 6px 10px;
+	cursor: pointer;
+}
+
+#count {
+	width: 90%;
+	box-sizing: border-box;
+	opacity: 0.7;
+	font-size: 12px;
+	margin-bottom: 12px;
+	margin-left: auto;
+	margin-right: auto;
+}
 
 /* Edit/Add Page Style */
-.edit-label { font-size: 18px; margin-bottom: 4px; }
-.edit-input { width: 100%; box-sizing: border-box; padding: 8px; font-size: 15px; font-family: system-ui, sans-serif;}
-.edit-textarea { width: 100%; min-height: 180px; box-sizing: border-box; padding: 8px; font-size: 14px; resize: vertical; font-family: system-ui, sans-serif;}
-.edit-back {align-self: flex-end; padding: 8px 18px; font-size: 15px; border-radius: 6px; border: none; background: #2b7cff; color: #fff; cursor: pointer; }
-.edit-container { display: flex; flex-direction: column; gap: 16px; }
-.edit-delete { align-self: flex-end; padding: 8px 18px; font-size: 15px; border-radius: 6px; border: none; background: #ff4d4d; color: #fff; cursor: pointer; }
-.edit-actions { display: flex; flex-direction: row; gap: 12px; justify-content: flex-end; }
+.edit-label {
+	font-size: 18px;
+	margin-bottom: 4px;
+}
 
-.add-container { width: 90%; box-sizing: border-box; display: flex; justify-content: flex-end; margin-left: auto; margin-right: auto; margin-bottom: 12px; }
-.add-container button { padding: 8px 18px; font-size: 15px; border-radius: 6px; border: none; background: #dddddd; color: #363636; cursor: pointer; }
+.edit-input {
+	width: 100%;
+	box-sizing: border-box;
+	padding: 8px;
+	font-size: 15px;
+	font-family: system-ui, sans-serif;
+}
 
-.addpage-container { width: 90%; margin: 24px auto; display: flex; flex-direction: column; gap: 16px; }
+.edit-textarea {
+	width: 100%;
+	min-height: 180px;
+	box-sizing: border-box;
+	padding: 8px;
+	font-size: 14px;
+	resize: vertical;
+	font-family: system-ui, sans-serif;
+}
+
+.edit-back {
+	align-self: flex-end;
+	padding: 8px 18px;
+	font-size: 15px;
+	border-radius: 6px;
+	border: none;
+	background: #2b7cff;
+	color: #fff;
+	cursor: pointer;
+}
+
+.edit-container {
+	display: flex;
+	flex-direction: column;
+	gap: 16px;
+}
+
+.edit-delete {
+	align-self: flex-end;
+	padding: 8px 18px;
+	font-size: 15px;
+	border-radius: 6px;
+	border: none;
+	background: #ff4d4d;
+	color: #fff;
+	cursor: pointer;
+}
+
+.edit-actions {
+	display: flex;
+	flex-direction: row;
+	gap: 12px;
+	justify-content: flex-end;
+}
+
+.add-container {
+	width: 90%;
+	box-sizing: border-box;
+	display: flex;
+	justify-content: flex-end;
+	margin-left: auto;
+	margin-right: auto;
+	margin-bottom: 12px;
+}
+
+.add-container button {
+	padding: 8px 18px;
+	font-size: 15px;
+	border-radius: 6px;
+	border: none;
+	background: #dddddd;
+	color: #363636;
+	cursor: pointer;
+}
+
+.addpage-container {
+	width: 90%;
+	margin: 24px auto;
+	display: flex;
+	flex-direction: column;
+	gap: 16px;
+}

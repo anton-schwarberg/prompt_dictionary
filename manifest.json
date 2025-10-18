@@ -3,6 +3,12 @@
   "name": "Prompt Dictionary",
   "version": "1.1.0",
   "description": "This Extension gives you the possibility to save and manage your prompts for AI tools.",
+  "icons": {
+    "16": "icons/m16.png",
+    "32": "icons/m32.png",
+    "48": "icons/m48.png",
+    "128": "icons/m128.png"
+  },
   "action": {
     "default_title": "Prompt Dictionary",
     "default_popup": "popup/index.html"

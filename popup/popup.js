@@ -193,7 +193,7 @@
 
     let low = 0;
     let high = fullText.length;
-    while (low < high) { // binäre Suche nach maximaler Textlänge, die hineinpasst
+    while (low < high) {
       const mid = Math.floor((low + high + 1) / 2);
       const candidate = `${fullText.slice(0, mid).trimEnd()}…`;
       el.textContent = candidate;
@@ -210,18 +210,18 @@
 
   /** Liste rendern */
   function render(items) {
-    listEl.innerHTML = ''; // vorhandene Anzeige zurücksetzen, bevor neue Elemente eingefügt werden
+    listEl.innerHTML = ''; 
     lastRenderedCount = items.length;
-    countEl.textContent = `${items.length} Hits`; // Trefferanzahl im Zählerbereich aktualisieren
-    for (const p of items) { // jeden Prompt-Datensatz nacheinander verarbeiten
-      const wrap = document.createElement('div'); // Container für einen kompletten Listeneintrag erzeugen
-      wrap.className = 'item'; // Container mit Styling für Listenelemente versehen
+    countEl.textContent = `${items.length} Hits`; 
+    for (const p of items) { 
+      const wrap = document.createElement('div'); 
+      wrap.className = 'item';
       wrap.dataset.id = p.id;
       wrap.draggable = false;
 
       // Meta-Bereich mit Label und Copy-Icon
-      const meta = document.createElement('div'); // obere Zeile für Meta-Informationen erstellen
-      meta.className = 'meta'; // Layout-Klasse für Meta-Bereich zuweisen
+      const meta = document.createElement('div');
+      meta.className = 'meta'; 
 
       const metaLeft = document.createElement('div');
       metaLeft.className = 'meta-left';
@@ -232,10 +232,10 @@
       handleBtn.setAttribute('aria-label', 'Drag to reorder');
       metaLeft.appendChild(handleBtn);
 
-      const label = document.createElement('div'); // Label-Element vorbereiten
-      label.className = 'label'; // Label-Styling aktivieren
-      label.textContent = p.label || p.id; // sichtbaren Text setzen, Fallback auf ID
-      metaLeft.appendChild(label); // Label in den Meta-Bereich einfügen
+      const label = document.createElement('div'); 
+      label.className = 'label';
+      label.textContent = p.label || p.id;
+      metaLeft.appendChild(label);
       meta.appendChild(metaLeft);
 
       const actions = document.createElement('div');
@@ -269,23 +269,22 @@
       actions.appendChild(copyIcon);
 
       meta.appendChild(actions);
-      wrap.appendChild(meta); // Meta-Bereich in den Listeneintrag aufnehmen
+      wrap.appendChild(meta); 
 
       // Prompt-Text in eigenem Feld mit Abstand und Text-Overflow
-      const promptBox = document.createElement('div'); // Bereich für den eigentlichen Prompttext erzeugen
-      promptBox.className = 'prompt-box'; // Styling für Textfeld anwenden
-      const fullText = p.text || ''; // vollständiger Prompt bleibt für das Kopieren erhalten
-      wrap.appendChild(promptBox); // Textbereich unter dem Meta-Block hinzufügen
-      listEl.appendChild(wrap); // fertigen Eintrag in die Liste einsetzen
-      clampPromptPreview(promptBox, fullText); // Vorschau auf maximale Höhe kürzen und Ellipse setzen
+      const promptBox = document.createElement('div'); 
+      promptBox.className = 'prompt-box';
+      const fullText = p.text || ''; 
+      wrap.appendChild(promptBox);
+      listEl.appendChild(wrap); 
+      clampPromptPreview(promptBox, fullText); 
       attachDragHandlers(wrap, handleBtn);
     }
   }
 
-  /** Suche */
+  /** Search */
   function filter(query) {
     const q = query.trim().toLowerCase();
-    // Problem hier
     if (!q) return prompts;
     return prompts.filter(p =>
       (p.label && p.label.toLowerCase().includes(q)) ||

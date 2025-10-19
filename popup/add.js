@@ -9,6 +9,9 @@
   backBtn.addEventListener('click', () => {
     window.location.href = 'index.html';
   });
+  backBtn.addEventListener('keydown', e => {
+    if (e.key === 'Enter' || e.key === ' ') window.location.href = 'index.html';
+  });
 
   saveBtn.addEventListener('click', async () => {
     const label = nameInput.value.trim();

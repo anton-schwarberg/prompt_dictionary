@@ -1,3 +1,6 @@
+/* Google Font Import */
+@import url('https://fonts.googleapis.com/css2?family=Source+Sans+3:ital,wght@0,200..900;1,200..900&display=swap');
+
 /* Subpage here */
 
 .subpage.header {
@@ -11,7 +14,7 @@
 .subpage.header h1 {
 	flex: 1;
 	text-align: center;
-	font-size: 22px;
+	font-size: 24px;
 	margin-bottom: 20px;
 }
 
@@ -50,8 +53,8 @@
 .addprompt-icon {
 	position: absolute;
 	right: 0;
-	width: 22px;
-	height: 22px;
+	width: 30px;
+	height: 30px;
 	cursor: pointer;
 	top: 50%;
 	transform: translateY(-50%);
@@ -62,8 +65,8 @@
 .export-icon {
 	position: absolute;
 	right: 36px;
-	width: 22px;
-	height: 22px;
+	width: 30px;
+	height: 30px;
 	cursor: pointer;
 	top: 50%;
 	transform: translateY(-50%);
@@ -76,8 +79,8 @@
 .import-icon {
 	position: absolute;
 	left: 0px;
-	width: 22px;
-	height: 22px;
+	width: 30px;
+	height: 30px;
 	cursor: pointer;
 	top: 50%;
 	transform: translateY(-50%);
@@ -88,7 +91,8 @@
 
 /* Body Style */
 body {
-	font-family: system-ui, sans-serif;
+	font-family: 'Source Sans 3', system-ui, sans-serif;
+	background: #F7F7F8;
 	margin: 12px;
 	width: 400px;
 	height: 600px;
@@ -107,6 +111,10 @@ input {
 
 input:focus {
 	outline: 2px solid #cecece;
+}
+
+#search {
+    font-family: 'Source Sans 3', system-ui, sans-serif;
 }
 
 .meta {
@@ -271,7 +279,7 @@ button {
 	box-sizing: border-box;
 	padding: 8px;
 	font-size: 15px;
-	font-family: system-ui, sans-serif;
+	font-family: 'Source Sans 3', system-ui, sans-serif;
 }
 
 .edit-textarea {
@@ -281,7 +289,7 @@ button {
 	padding: 8px;
 	font-size: 14px;
 	resize: vertical;
-	font-family: system-ui, sans-serif;
+	font-family: 'Source Sans 3', system-ui, sans-serif;
 }
 
 .edit-back {

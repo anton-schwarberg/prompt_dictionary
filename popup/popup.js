@@ -355,7 +355,6 @@
       if (!p) return;
       exportBtn.style.filter = 'brightness(0.7)';
       setTimeout(() => (exportBtn.style.filter = ''), 200);
-      // Einzel-Export als Array
       const dataStr = JSON.stringify([p], null, 2);
       const blob = new Blob([dataStr], {type: 'application/json'});
       const url = URL.createObjectURL(blob);

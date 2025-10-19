@@ -10,17 +10,25 @@
       <img src="../icons/back.png" id="back-btn" class="back-icon" alt="Zurück" tabindex="0">
       <h1>Add Prompt</h1>
     </div>
-    <div class="addpage-container">
-      <label class="edit-label" for="add-name">Prompt Name</label>
-      <input class="edit-input" id="add-name" type="text" maxlength="80" placeholder="e.g. Translator Prompt"/>
-      <label class="edit-label" for="add-text">Prompt</label>
-      <textarea class="edit-textarea" id="add-text" placeholder="Enter your prompt here..."></textarea>
-      <label class="edit-label" for="add-labels">Labels</label>
-      <input class="edit-input" id="add-labels" type="text" maxlength="120" placeholder="e.g. tag1, tag2 (comma-separated)" />
-      <div class="edit-actions">
-        <button class="edit-back" id="save-btn">Save</button>
-      </div>
-    </div>
+    <main class="form-page">
+      <form class="addpage-container form-card" id="add-form" novalidate>
+        <div class="form-field">
+          <label class="edit-label form-label" for="add-name">Prompt Name</label>
+          <input class="edit-input form-control" id="add-name" type="text" maxlength="80" placeholder="e.g. Translator Prompt" />
+        </div>
+        <div class="form-field">
+          <label class="edit-label form-label" for="add-text">Prompt</label>
+          <textarea class="edit-textarea form-control" id="add-text" placeholder="Enter your prompt here..."></textarea>
+        </div>
+        <div class="form-field">
+          <label class="edit-label form-label" for="add-labels">Labels</label>
+          <input class="edit-input form-control" id="add-labels" type="text" maxlength="120" placeholder="e.g. tag1, tag2 (comma-separated)" />
+        </div>
+        <div class="form-actions edit-actions">
+          <button class="btn-primary" id="save-btn" type="button">Save</button>
+        </div>
+      </form>
+    </main>
     <script src="add.js"></script>
   </body>
 </html>

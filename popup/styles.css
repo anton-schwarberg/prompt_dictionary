@@ -28,6 +28,7 @@
   --color-text-inverse: #FFFFFF;
   --color-button-save-bg: #3A3C40;
   --color-button-save-hover: #4A4C51;
+  --icon-hover-scale: 1.12;
 }
 
 /* =====================================================
@@ -80,13 +81,34 @@ button:disabled {
   opacity: 0.85;
 }
 
-#save-btn {
+.btn-primary {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  padding: 10px 22px;
+  font-size: 15px;
+  font-weight: 600;
+  border-radius: 12px;
+  color: var(--color-text-inverse);
   background: var(--color-button-save-bg);
+  box-shadow: 0 10px 24px rgba(17, 18, 22, 0.12);
+  transition: transform 0.15s ease, box-shadow 0.15s ease, background 0.2s ease;
 }
 
-#save-btn:hover,
-#save-btn:focus-visible {
+.btn-primary:hover,
+.btn-primary:focus-visible {
+  transform: translateY(-1px);
   background: var(--color-button-save-hover);
+  box-shadow: 0 14px 32px rgba(17, 18, 22, 0.18);
+}
+
+.btn-primary:disabled {
+  transform: none;
+  box-shadow: none;
+}
+
+#save-btn {
+  background: var(--color-button-save-bg);
 }
 
 #save-btn.is-saving,
@@ -134,7 +156,13 @@ button:disabled {
   border-radius: 6px;
   background: none;
   cursor: pointer;
-  transform: translateY(-50%);
+  transform: translateY(-50%) scale(1);
+  transition: transform 0.18s ease, filter 0.18s ease;
+}
+
+.back-icon:hover,
+.back-icon:focus-visible {
+  transform: translateY(-50%) scale(var(--icon-hover-scale));
 }
 
 /* Main Page Header */
@@ -163,7 +191,8 @@ button:disabled {
   border-radius: 6px;
   background: none;
   cursor: pointer;
-  transform: translateY(-50%);
+  transform: translateY(-50%) scale(1);
+  transition: transform 0.2s ease, filter 0.2s ease;
 }
 
 .addprompt-icon {
@@ -172,12 +201,19 @@ button:disabled {
 
 .export-icon {
   right: 36px;
-  transition: filter 0.2s;
 }
 
 .import-icon {
   left: 0;
-  transition: filter 0.2s;
+}
+
+.addprompt-icon:hover,
+.addprompt-icon:focus-visible,
+.export-icon:hover,
+.export-icon:focus-visible,
+.import-icon:hover,
+.import-icon:focus-visible {
+  transform: translateY(-50%) scale(var(--icon-hover-scale));
 }
 
 /* =====================================================
@@ -217,7 +253,8 @@ button:disabled {
   background-repeat: no-repeat;
   background-size: 16px 16px;
   cursor: grab;
-  transition: filter 0.15s;
+  transform: scale(1);
+  transition: transform 0.2s ease, filter 0.15s ease;
 }
 
 .drag-handle:hover,
@@ -228,11 +265,13 @@ button:disabled {
 
 .drag-handle:hover {
   filter: brightness(0.85);
+  transform: scale(var(--icon-hover-scale));
 }
 
 .drag-handle:focus-visible {
   border-radius: 6px;
   outline: 2px solid var(--color-outline-highlight);
+  transform: scale(var(--icon-hover-scale));
 }
 
 .drag-handle:active {
@@ -293,7 +332,17 @@ button:disabled {
   border-radius: 6px;
   cursor: pointer;
   user-select: none;
-  transition: filter 0.2s;
+  transform: scale(1);
+  transition: transform 0.2s ease, filter 0.2s ease;
+}
+
+.copy:hover,
+.copy:focus-visible,
+.edit:hover,
+.edit:focus-visible,
+.export-single:hover,
+.export-single:focus-visible {
+  transform: scale(var(--icon-hover-scale));
 }
 
 .prompt-box {
@@ -316,8 +365,11 @@ button:disabled {
 ===================================================== */
 
 .edit-label {
-  margin-bottom: 2px;
-  font-size: 18px;
+  font-size: 12px;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--color-text-secondary);
 }
 
 .edit-input {
@@ -330,10 +382,10 @@ button:disabled {
 
 .edit-textarea {
   width: 100%;
-  min-height: 180px;
-  padding: 8px;
+  min-height: 200px;
+  padding: 12px;
   box-sizing: border-box;
-  font-size: 14px;
+  font-size: 15px;
   resize: vertical;
   font-family: 'Source Sans 3', system-ui, sans-serif;
 }
@@ -341,7 +393,8 @@ button:disabled {
 .edit-container {
   display: flex;
   flex-direction: column;
-  gap: 16px;
+  gap: 20px;
+  width: 100%;
 }
 
 .edit-actions {
@@ -351,17 +404,86 @@ button:disabled {
   justify-content: flex-end;
 }
 
+.form-page {
+  display: flex;
+  justify-content: center;
+  padding: 0 10px 32px;
+  box-sizing: border-box;
+}
+
+.form-card {
+  width: 100%;
+  margin: 0 auto;
+  padding: 24px;
+  box-sizing: border-box;
+  border: 1px solid var(--color-border);
+  border-radius: 16px;
+  background: var(--color-surface);
+  box-shadow: 0 18px 36px rgba(17, 18, 22, 0.08);
+  display: flex;
+  flex-direction: column;
+  gap: 24px;
+}
+
+.form-field {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.form-card .form-control {
+  width: 100%;
+  margin: 0;
+  padding: 12px 14px;
+  border: 1px solid var(--color-border);
+  border-radius: 12px;
+  background: var(--color-surface-muted);
+  font-size: 15px;
+  line-height: 1.35;
+  color: var(--color-text-primary);
+  transition: border-color 0.15s ease, box-shadow 0.15s ease, background-color 0.15s ease;
+}
+
+.form-card .form-control:focus {
+  outline: none;
+  border-color: var(--color-outline-highlight);
+  background: var(--color-surface);
+  box-shadow: 0 0 0 3px rgba(183, 196, 255, 0.35);
+}
+
+.form-card .form-control::placeholder {
+  color: var(--color-text-secondary);
+  opacity: 0.75;
+}
+
+.form-card textarea.form-control {
+  min-height: 220px;
+  line-height: 1.45;
+}
+
+.form-actions {
+  display: flex;
+  justify-content: flex-end;
+  gap: 12px;
+}
+
 button.edit-delete {
   align-self: flex-end;
-  padding: 8px 18px;
+  padding: 10px 22px;
   background: var(--color-red);
   color: var(--color-text-inverse);
   font-size: 15px;
+  font-weight: 600;
+  border-radius: 12px;
+  box-shadow: 0 10px 24px rgba(214, 69, 69, 0.25);
+  transition: transform 0.15s ease, box-shadow 0.15s ease, filter 0.2s ease;
 }
 
 button.edit-delete:hover,
 button.edit-delete:focus-visible {
-  filter: brightness(0.95);
+  filter: brightness(0.96);
+  transform: translateY(-1px);
+  box-shadow: 0 14px 32px rgba(214, 69, 69, 0.3);
 }
 
 .add-container {
@@ -383,11 +505,11 @@ button.edit-delete:focus-visible {
 }
 
 .addpage-container {
-  width: 90%;
-  margin: 24px auto;
+  width: 100%;
+  margin: 0;
   display: flex;
   flex-direction: column;
-  gap: 16px;
+  gap: 20px;
 }
 
 /* =====================================================

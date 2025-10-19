@@ -10,16 +10,22 @@
       <img src="../icons/back.png" id="back-btn" class="back-icon" alt="Zurück" tabindex="0">
       <h1>Edit Prompt</h1>
     </div>
-    <div class="edit-container">
-      <label class="edit-label" for="edit-name">Prompt Name</label>
-      <input class="edit-input" id="edit-name" type="text" maxlength="80" />
-      <label class="edit-label" for="edit-text">Prompt</label>
-      <textarea class="edit-textarea" id="edit-text"></textarea>
-      <div class="edit-actions">
-        <button class="edit-back" id="save-btn">Save</button>
-        <button class="edit-delete" id="delete-btn" type="button">Delete</button>
-      </div>
-    </div>
+    <main class="form-page">
+      <form class="edit-container form-card" id="edit-form" novalidate>
+        <div class="form-field">
+          <label class="edit-label form-label" for="edit-name">Prompt Name</label>
+          <input class="edit-input form-control" id="edit-name" type="text" maxlength="80" placeholder="Enter a concise prompt title" />
+        </div>
+        <div class="form-field">
+          <label class="edit-label form-label" for="edit-text">Prompt</label>
+          <textarea class="edit-textarea form-control" id="edit-text" placeholder="Write or adjust the prompt text here"></textarea>
+        </div>
+        <div class="form-actions edit-actions">
+          <button class="btn-primary" id="save-btn" type="button">Save</button>
+          <button class="edit-delete" id="delete-btn" type="button">Delete</button>
+        </div>
+      </form>
+    </main>
     <script src="edit.js"></script>
   </body>
 </html>

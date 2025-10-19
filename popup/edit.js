@@ -15,6 +15,7 @@
   const saveBtn = document.getElementById('save-btn');
   const backBtn = document.getElementById('back-btn');
   const deleteBtn = document.getElementById('delete-btn');
+  const wait = ms => new Promise(resolve => setTimeout(resolve, ms));
 
   const { prompts } = await chrome.storage.local.get("prompts");
   // Search prompt
@@ -30,12 +31,24 @@
 
   // Save
   saveBtn.addEventListener('click', async () => {
+    if (saveBtn.disabled) return;
+    saveBtn.disabled = true;
+    saveBtn.classList.add('is-saving');
+    const flash = wait(400);
     prompt.label = nameInput.value.trim();
     prompt.text = textInput.value.trim();
     prompts[idx] = prompt;
-    // Save in Storage
-    await chrome.storage.local.set({ prompts });
-    window.location.href = 'index.html';
+    try {
+      // Save in Storage
+      await chrome.storage.local.set({ prompts });
+      await flash;
+      window.location.href = 'index.html';
+    } catch (err) {
+      console.error('Fehler beim Speichern des Prompts', err);
+      saveBtn.classList.remove('is-saving');
+      saveBtn.disabled = false;
+      alert('Prompt konnte nicht gespeichert werden. Bitte erneut versuchen.');
+    }
   });
 
   backBtn.addEventListener('click', () => {

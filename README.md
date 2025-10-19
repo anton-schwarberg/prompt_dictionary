@@ -61,7 +61,7 @@ $ cd prompt_dictionary
 
 ## Download
 
-You can [download](https://github.com/anton-schwarberg/prompt_dictionary/releases/tag/v1.0.1) the latest installable version of Prompt Dictionary for Windows, macOS and Linux.
+You can [download](https://github.com/anton-schwarberg/prompt_dictionary/releases/tag/v1.0.2) the latest installable version of Prompt Dictionary for Windows, macOS and Linux.
 
 ## Icons
 

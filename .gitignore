@@ -1,4 +1,6 @@
 data
 helper
 icons_new
-icons/icons_old.DS_Store
+icons/icons_old
+icons/.DS_Store
+**/.DS_Store

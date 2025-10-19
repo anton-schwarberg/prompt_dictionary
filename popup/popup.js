@@ -232,8 +232,10 @@
       handleBtn.setAttribute('aria-label', 'Drag to reorder');
       metaLeft.appendChild(handleBtn);
 
-      const label = document.createElement('div'); 
+      const label = document.createElement('button'); 
+      label.type = 'button';
       label.className = 'label';
+      label.dataset.id = p.id;
       label.textContent = p.label || p.id;
       metaLeft.appendChild(label);
       meta.appendChild(metaLeft);
@@ -246,7 +248,7 @@
       exportsingle.className = 'export-single';
       exportsingle.src = '../icons/export.png';
       exportsingle.alt = 'export';
-      exportsingle.title = 'export this prompt';
+      exportsingle.title = 'Export prompt';
       exportsingle.dataset.id = p.id;
       actions.appendChild(exportsingle);
 
@@ -255,7 +257,7 @@
       editIcon.className = 'edit';
       editIcon.src = '../icons/edit.png';
       editIcon.alt = 'edit';
-      editIcon.title = 'edit prompt';
+      editIcon.title = 'Edit prompt';
       editIcon.dataset.id = p.id;
       actions.appendChild(editIcon);
 
@@ -264,7 +266,7 @@
       copyIcon.className = 'copy';
       copyIcon.src = '../icons/copy.png';
       copyIcon.alt = 'copy';
-      copyIcon.title = 'copy prompt';
+      copyIcon.title = 'Copy prompt';
       copyIcon.dataset.id = p.id;
       actions.appendChild(copyIcon);
 
@@ -331,6 +333,13 @@
       setTimeout(() => (btn.style.filter = ''), 600);
       return;
     }
+    const labelBtn = e.target.closest('.label');
+    if (labelBtn) {
+      const id = labelBtn.dataset.id;
+      window.location.href = `edit.html?id=${encodeURIComponent(id)}`;
+      return;
+    }
+
     // Editieren
     const editBtn = e.target.closest('.edit');
     if (editBtn) {

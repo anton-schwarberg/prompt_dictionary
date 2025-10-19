@@ -61,7 +61,7 @@ $ cd prompt_dictionary
 
 ## Download
 
-You can [download](https://github.com/amitmerchant1990/electron-markdownify/releases/tag/v1.2.0) the latest installable version of Prompt Dictionary for Windows, macOS and Linux.
+You can [download](https://github.com/anton-schwarberg/prompt_dictionary/releases/tag/v1.0.0) the latest installable version of Prompt Dictionary for Windows, macOS and Linux.
 
 ## Icons
 

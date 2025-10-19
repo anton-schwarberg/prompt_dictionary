@@ -44,7 +44,7 @@
 ## How To Use
 
 ### Clone this Repository
-To clone and run this application, you'll need [Git](https://git-scm.com) installed on your computer. From your command line:
+To clone and run this application, you'll need Git installed on your computer. From your command line:
 
 ```bash
 # Clone this repository

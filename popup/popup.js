@@ -3,15 +3,15 @@
   const searchEl = document.getElementById('search');
   const countEl = document.getElementById('count');
 
-  /** In-Memory-Liste der Prompts */
+  /** In-Memory List of Prompts */
   let prompts = [];
-  // Problem hier
+
   let lastRenderedCount = 0;
   let reorderMessageTimer = null;
   let currentDropTarget = null;
   const REORDER_HINT_TIMEOUT = 2000;
 
-  /** Prompts laden nur aus Storage */
+  /** Load Prompts from Storage */
   async function loadPrompts() {
     const { prompts: storedPrompts = [] } = await chrome.storage.local.get("prompts");
     prompts = storedPrompts;
@@ -130,7 +130,7 @@
     const orderedIds = orderedItems.map(el => el.dataset.id).filter(Boolean);
     if (!orderedIds.length) return;
     if (orderedIds.length !== prompts.length) {
-      // Liste war gefiltert, ursprüngliche Reihenfolge beibehalten
+
       render(isSearchActive() ? filter(searchEl.value) : prompts);
       return;
     }
@@ -141,7 +141,7 @@
     const idMap = new Map(prompts.map(p => [p.id, p]));
     const newPrompts = orderedIds.map(id => idMap.get(id)).filter(Boolean);
     if (newPrompts.length !== prompts.length) {
-      // sicherheitshalber nichts überschreiben, falls IDs fehlen
+
       render(isSearchActive() ? filter(searchEl.value) : prompts);
       showTemporaryMessage('Unable to save order');
       return;
@@ -177,19 +177,18 @@
     }
   });
 
-  /** HTML-Escaping für Labels/IDs */
+  
   function escapeHtml(s) {
     return s.replace(/[&<>'"]/g, c => ({
       '&':'&amp;','<':'&lt;','>':'&gt;',"'":'&#39;','"':'&quot;'
     }[c]));
   }
 
-  /** Kürzt den sichtbaren Prompt-Text auf die verfügbare Höhe und fügt bei Bedarf eine Ellipse an. */
   function clampPromptPreview(el, fullText) {
-    el.textContent = fullText; // zunächst den vollständigen Text einsetzen
-    if (!fullText || el.clientHeight === 0) return; // nichts zu tun, wenn kein Text oder Element unsichtbar ist
+    el.textContent = fullText; 
+    if (!fullText || el.clientHeight === 0) return; 
     const limitHeight = el.clientHeight;
-    if (el.scrollHeight <= limitHeight) return; // Text passt bereits ohne Kürzung
+    if (el.scrollHeight <= limitHeight) return; 
 
     let low = 0;
     let high = fullText.length;
@@ -205,10 +204,10 @@
     }
 
     const truncated = fullText.slice(0, low).trimEnd();
-    el.textContent = truncated ? `${truncated}…` : '…'; // endgültige Vorschau setzen
+    el.textContent = truncated ? `${truncated}…` : '…'; 
   }
 
-  /** Liste rendern */
+  /** Render List */
   function render(items) {
     listEl.innerHTML = ''; 
     lastRenderedCount = items.length;
@@ -219,7 +218,6 @@
       wrap.dataset.id = p.id;
       wrap.draggable = false;
 
-      // Meta-Bereich mit Label und Copy-Icon
       const meta = document.createElement('div');
       meta.className = 'meta'; 
 
@@ -252,7 +250,7 @@
       exportsingle.dataset.id = p.id;
       actions.appendChild(exportsingle);
 
-      // Edit-Icon als klickbares Bild
+      // Edit icon as clickable image
       const editIcon = document.createElement('img');
       editIcon.className = 'edit';
       editIcon.src = '../icons/edit.png';
@@ -261,7 +259,7 @@
       editIcon.dataset.id = p.id;
       actions.appendChild(editIcon);
 
-      // Copy-Icon als klickbares Bild
+      // Copy-Icon as clickable image
       const copyIcon = document.createElement('img');
       copyIcon.className = 'copy';
       copyIcon.src = '../icons/copy.png';
@@ -273,7 +271,7 @@
       meta.appendChild(actions);
       wrap.appendChild(meta); 
 
-      // Prompt-Text in eigenem Feld mit Abstand und Text-Overflow
+
       const promptBox = document.createElement('div'); 
       promptBox.className = 'prompt-box';
       const fullText = p.text || ''; 
@@ -296,7 +294,7 @@
     );
   }
 
-  /** Kopieren mit Fallback */
+  /** Copy with Fallback */
   async function copyToClipboard(text) {
     try {
       await navigator.clipboard.writeText(text);
@@ -340,7 +338,7 @@
       return;
     }
 
-    // Editieren
+    // Edit
     const editBtn = e.target.closest('.edit');
     if (editBtn) {
       const id = editBtn.dataset.id;
